@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "448446379597",
+    "firebase_url": "https://attributionmethod.firebaseio.com",
+    "project_id": "attributionmethod",
+    "storage_bucket": "attributionmethod.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:448446379597:android:57ff577b6548f21e62ce04",
+        "android_client_info": {
+          "package_name": "com.appsflyer.attributionmethodtest"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "448446379597-d1fli40d82r46r6u3dji7n1il4rmj1ft.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCD-UyKrvm0m7A6VpEE0gb_b863urzJDaM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "448446379597-d1fli40d82r46r6u3dji7n1il4rmj1ft.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,15 +1,36 @@
 import 'package:attributionmethodtest/DeviceIdHelper.dart';
+import 'package:attributionmethodtest/RemoteConfigManager.dart';
 import 'package:attributionmethodtest/screens/introduction_screen.dart';
 import 'package:flutter/material.dart';
 
-import '../AttributionMethod.dart';
 import 'package:wave/config.dart';
 import 'package:wave/wave.dart';
 
 import 'gradient_button.dart';
 import 'page_route_builders.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
+
+  HomeScreen();
+
+  @override
+  _HomeScreenState createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  String get _targetAppName => remoteConfig.getString("target_app_name");
+
+  List<String> get _methods => remoteConfig.getString("test_methods").split(",");
+  List<String> _methodNames;
+
+  @override
+  void initState() {
+    super.initState();
+    DeviceIdHelper.retrieveDeviceId();
+    print(_methods);
+    _methodNames = _methods.map((method) => remoteConfig.getString(method+"_name")).toList();
+    print(_methodNames);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -67,55 +88,53 @@ Test App
                 child: Text.rich(TextSpan(
                     style: TextStyle(fontSize: 16, color: Colors.black87),
                     text: 'Use this app to test the ',
-                    children: <TextSpan>[
-                      TextSpan(text: "Referrer",
-                          style: TextStyle(fontWeight: FontWeight.bold,
-                              color: Colors.black)),
-                      TextSpan(text: ", "),
-                      TextSpan(text: "ID Matching",
-                          style: TextStyle(fontWeight: FontWeight.bold,
-                              color: Colors.black)),
-                      TextSpan(text: ", "),
-                      TextSpan(text: "View-Through",
-                          style: TextStyle(fontWeight: FontWeight.bold,
-                              color: Colors.black)),
-                      TextSpan(text: ", "),
-                      TextSpan(text: "Fingerprinting ",
-                          style: TextStyle(fontWeight: FontWeight.bold,
-                              color: Colors.black)),
-                      TextSpan(text: " for the "),
-                      TextSpan(text: "AppsFlyer Candy Shop Training",
-                        style: TextStyle(fontWeight: FontWeight.bold,
-                          fontStyle: FontStyle.italic,),
-                      ),
-                      TextSpan(text: " app"),
-                    ]
+                    children: _introText(),
                 )),
               ),
-              _buildButton(context, AttributionMethod.Referrer),
-              _buildButton(context, AttributionMethod.IdMatching),
-              _buildButton(context, AttributionMethod.ViewThrough),
-              _buildButton(context, AttributionMethod.FingerPrinting),
+              for(Widget button in _buildButtons(context)) button,
             ],
           ),
         ],
       ),
     );
   }
-  Widget _buildButton(BuildContext context, AttributionMethod method) {
-    return GradientButton(
-      width: 40,
-      height: 52,
-      margin: EdgeInsets.only(left: 20, right: 20, top: 15, bottom: 15),
-      buttonText: getAttributionMethodText(method),
-      onPressed: () {
-        Navigator.push(context, PlainRouteBuilder(IntroductionScreen(method)));
-      },
-    );
+
+  List<TextSpan> _introText() {
+    List<TextSpan> result = List<TextSpan>();
+    for (String methodName in _methodNames) {
+      result.add(
+          TextSpan(text: "$methodName, ",
+              style: TextStyle(
+                  fontWeight: FontWeight.bold, color: Colors.black))
+      );
+      result.add(TextSpan(text: ", "));
+    }
+    result.removeLast();
+    result.addAll(<TextSpan>[
+      TextSpan(text: " for the "),
+      TextSpan(text: _targetAppName,
+        style: TextStyle(fontWeight: FontWeight.bold,
+          fontStyle: FontStyle.italic,),
+      ),
+      TextSpan(text: " app"),
+    ]);
+    return result;
   }
 
-  HomeScreen(){
-    deviceIdHelper.retrieveDeviceId();
+  List<Widget> _buildButtons(BuildContext context) {
+    List<GradientButton> result = List<GradientButton>();
+    for (var i = 0; i < _methods.length && i < _methodNames.length; i++) {
+      result.add(GradientButton(
+        width: 40,
+        height: 52,
+        margin: EdgeInsets.only(left: 20, right: 20, top: 15, bottom: 15),
+        buttonText: "Test ${_methodNames[i]}",
+        onPressed: () {
+          Navigator.push(
+              context, PlainRouteBuilder(IntroductionScreen(_methods[i])));
+        },
+      ));
+    }
+    return result;
   }
-
 }

@@ -1,18 +1,19 @@
 import 'package:advertising_id/advertising_id.dart';
 
 class DeviceIdHelper {
-  String advertisingId = "";
+  static String advertisingId;
 
-  Future<String> retrieveDeviceId() async {
+  static Future<String> retrieveDeviceId() async {
     print("[DeviceIdHelper] retrieveDeviceId");
-    AdvertisingId.id.then((deviceId) {
-      print("[DeviceIdHelper] retrieved advertiserId: $deviceId");
-      advertisingId = deviceId;
-    }).catchError((error) {
-      print("[DeviceIdHelper] failed to get advertiserId: $error");
-    });
+    if(advertisingId!=null) return advertisingId;
+    else {
+      try {
+        advertisingId = await AdvertisingId.id;
+        print("[DeviceIdHelper] retrieved advertiserId: $advertisingId");
+      } on Exception catch(error) {
+        print("[DeviceIdHelper] failed to get advertiserId: $error");
+      }
+    }
     return advertisingId;
   }
 }
-
-DeviceIdHelper deviceIdHelper = DeviceIdHelper();

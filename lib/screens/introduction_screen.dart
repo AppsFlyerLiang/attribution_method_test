@@ -1,14 +1,14 @@
+import 'package:attributionmethodtest/RemoteConfigManager.dart';
 import 'package:attributionmethodtest/screens/landing_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:wave/config.dart';
 import 'package:wave/wave.dart';
 
-import '../AttributionMethod.dart';
 import 'gradient_button.dart';
 import 'page_route_builders.dart';
 
 class IntroductionScreen extends StatefulWidget {
-  final AttributionMethod method;
+  final String method;
   IntroductionScreen(this.method);
 
   @override
@@ -16,18 +16,17 @@ class IntroductionScreen extends StatefulWidget {
 }
 
 class _IntroductionScreenState extends State<IntroductionScreen> with TickerProviderStateMixin  {
+  String get _targetAppName => remoteConfig.getString("target_app_name");
   AnimationController _controller;
   Animation<double> _animation;
-
   @override
   void initState() {
     super.initState();
     _controller = AnimationController(
-        duration: const Duration(milliseconds: 1000), vsync: this, value: 0.0);
-    _animation = CurvedAnimation(parent: _controller, curve: Curves.bounceInOut);
+        duration: const Duration(milliseconds: 600), vsync: this, value: 0.0);
+    _animation = CurvedAnimation(parent: _controller, curve: Curves.bounceOut);
 
     _controller.forward();
-
   }
   @override
   dispose() {
@@ -101,12 +100,12 @@ Test App
                               TextSpan(text: "OK",style: TextStyle(fontWeight: FontWeight.bold,
                                   color: Colors.black)),
                               TextSpan(text: " button below you will be redirected to the Google Play App to install the "),
-                              TextSpan(text: "AppsFlyer Candy Shop Training",style: TextStyle(fontWeight: FontWeight.bold, fontStyle: FontStyle.italic,
+                              TextSpan(text: _targetAppName, style: TextStyle(fontWeight: FontWeight.bold, fontStyle: FontStyle.italic,
                                   color: Colors.black)),
                               TextSpan(text: " App."),
                               TextSpan(text: '\n\n'),
                               TextSpan(text: 'After installing and launching the '),
-                              TextSpan(text: 'AppsFlyer Candy Shop Training',style: TextStyle(fontWeight: FontWeight.bold, fontStyle: FontStyle.italic,
+                              TextSpan(text: _targetAppName, style: TextStyle(fontWeight: FontWeight.bold, fontStyle: FontStyle.italic,
                                   color: Colors.black)),
                               TextSpan(text: ' App. Please come back to this App for details on how to check the results of your install.'),
                             ],
@@ -151,9 +150,5 @@ Test App
         ],
       ),
     );
-  }
-
-  void _onButtonPressed(BuildContext context) {
-
   }
 }

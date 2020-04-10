@@ -1,14 +1,18 @@
 import 'dart:async';
+import 'dart:math';
 
-import 'package:attributionmethodtest/AttributionMethod.dart';
+import 'package:attributionmethodtest/DeviceIdHelper.dart';
+import 'package:attributionmethodtest/RemoteConfigManager.dart';
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:wave/config.dart';
 import 'package:wave/wave.dart';
 
+import 'gradient_button.dart';
+
 class LandingScreen extends StatefulWidget {
-  final AttributionMethod method;
+  final String method;
   LandingScreen({Key key, this.method}) : super(key: key);
 
   @override
@@ -21,6 +25,7 @@ class _LandingScreenState extends State<LandingScreen>  with TickerProviderState
   Timer _timer;
   int _maxCount = 5;
   int _remainingTime = 5;
+  String _url;
 
   void startTimer() {
     const oneSec = const Duration(seconds: 1);
@@ -44,6 +49,10 @@ class _LandingScreenState extends State<LandingScreen>  with TickerProviderState
   @override
   void initState() {
     super.initState();
+    setupUrl().then((value){
+      print("setup URL: $value");
+      _url = value;
+    });
     _controller = AnimationController(
         duration: const Duration(milliseconds: 300), vsync: this, value: 0.0);
     _animation = CurvedAnimation(parent: _controller, curve: Curves.bounceInOut);
@@ -51,6 +60,7 @@ class _LandingScreenState extends State<LandingScreen>  with TickerProviderState
     _controller.forward();
 
     startTimer();
+    
   }
   @override
   dispose() {
@@ -159,6 +169,21 @@ Test App
                                 animateFromLastPercent: true,
 
                               ),
+                              Center(
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: <Widget>[
+                                    Expanded(
+                                      child: GradientButton(
+                                        height: 50,
+                                        margin: EdgeInsets.all(20),
+                                        buttonText: "Cancel",
+                                        onPressed: () { Navigator.pop(context); },
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
 
                               SizedBox(
                                 height: 20,
@@ -174,13 +199,24 @@ Test App
     );
   }
 
+  Future<String> setupUrl() async {
+    print("setupUrl");
+    String url = remoteConfig.getString(widget.method+"_url");
+    String deviceId = await DeviceIdHelper.retrieveDeviceId();
+
+    print("setupUrl return");
+    return url.replaceAll("{RANDOM-VALUE}", Random().nextInt(100000000).toString())
+        .replaceAll("{THE-DEVICE-ID}", deviceId);
+  }
+
   void onCountDownFinished() async {
-    String url = getAttributionMethodTargetUrl(widget.method);
-    print("[onCountDownFinished] open url:\n$url");
-    if (await canLaunch(url)) {
-      await launch(url);
+    if (await canLaunch(_url)) {
+      await launch(_url);
     } else {
-      throw 'Could not launch $url';
+      throw 'Could not launch $_url';
     }
   }
+
+
+
 }
