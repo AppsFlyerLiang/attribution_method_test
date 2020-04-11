@@ -36,7 +36,7 @@ class MyApp extends AnimatedWidget {
     return MaterialApp(
       title: 'AppsFlyer Attribution Method Test App',
       theme: ThemeData(
-        scaffoldBackgroundColor: Colors.grey[400],
+        scaffoldBackgroundColor: Color.fromARGB(255, 122, 198, 235),
         backgroundColor: Colors.grey[400],
         appBarTheme: AppBarTheme(
           color: appPrimaryColor,

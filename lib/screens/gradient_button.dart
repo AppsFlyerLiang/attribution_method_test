@@ -14,7 +14,7 @@ class GradientButton extends StatelessWidget {
     this.height,
     this.margin,
     this.decoration = const BoxDecoration(
-      gradient: LinearGradient(colors: [Colors.greenAccent, Colors.green],
+      gradient:  LinearGradient(colors: [Colors.lightBlueAccent, Colors.indigo, Colors.indigo],
         begin: Alignment.topCenter,
         end: Alignment.bottomCenter,
       ),
@@ -31,7 +31,7 @@ class GradientButton extends StatelessWidget {
       child: RaisedButton(
         color: Colors.transparent,
         padding: EdgeInsets.all(0.0),
-        elevation: 11,
+        elevation: 5,
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(30.0))
         ),
@@ -42,7 +42,7 @@ class GradientButton extends StatelessWidget {
             constraints: const BoxConstraints(minWidth: 80.0, minHeight: 50.0),
             // min sizes for Material buttons
             alignment: Alignment.center,
-            child: Text(buttonText, textAlign: TextAlign.center,),
+            child: Text(buttonText, textAlign: TextAlign.center, style: TextStyle(fontSize: 16, color: Colors.white.withAlpha(212), fontWeight: FontWeight.bold, shadows: [Shadow(color: Colors.black87, offset: Offset(1, 1), blurRadius: 2)]),),
           ),
         ),
         onPressed: () { onPressed(); }

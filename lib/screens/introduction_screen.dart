@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:wave/config.dart';
 import 'package:wave/wave.dart';
 
+import 'center_app_bar.dart';
 import 'gradient_button.dart';
+import 'app_background.dart';
 import 'page_route_builders.dart';
 
 class IntroductionScreen extends StatefulWidget {
@@ -39,50 +41,10 @@ class _IntroductionScreenState extends State<IntroductionScreen> with TickerProv
     return Scaffold(
       body: Stack(
         children: <Widget>[
-          Container(
-            height: 400,
-            child: RotatedBox(
-              quarterTurns: 2,
-              child: WaveWidget(
-                config: CustomConfig(
-                  gradients: [
-                    [Colors.purpleAccent, Colors.pinkAccent],
-                    [Colors.blueAccent, Colors.deepOrange],
-                    [Colors.greenAccent, Colors.lightBlueAccent.shade400],
-                    [Colors.redAccent, Colors.limeAccent],
-                  ],
-                  durations: [35000, 19440, 10800, 6000],
-                  heightPercentages: [0.10, 0.11, 0.12, 0.13],
-                  blur: MaskFilter.blur(BlurStyle.solid, 10),
-                  gradientBegin: Alignment.topRight,
-                  gradientEnd: Alignment.bottomLeft,
-                ),
-                waveAmplitude: 0,
-                size: Size(
-                  double.infinity,
-                  double.infinity,
-                ),
-
-              ),
-            ),
-          ),
-
+          AppBackground(),
           ListView(
             children: <Widget>[
-              Container(
-                padding: EdgeInsets.all(30),
-                child: Center(
-                  child: Text(
-                    '''
-AppsFlyer 
-Attribution Method
-Test App
-                      ''',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
-                  ),
-                ),
-              ),
+              CenterAppBar(),
               ScaleTransition(
                 scale: _animation,
                 child: Card(
@@ -92,8 +54,8 @@ Test App
                     children: <Widget>[
                       Container(
                         padding: EdgeInsets.all(30),
-                        child: Text.rich(
-                          TextSpan(
+                        child: RichText(
+                          text: TextSpan(
                             style: TextStyle(fontSize: 16, color: Colors.black87),
                             text: 'After clicking the ',
                             children: <TextSpan> [
