@@ -1,16 +1,11 @@
-import 'package:attributionmethodtest/DeviceIdHelper.dart';
-import 'package:attributionmethodtest/RemoteConfigManager.dart';
+import 'package:attributionmethodtest/utils/DeviceIdHelper.dart';
+import 'package:attributionmethodtest/utils/RemoteConfigManager.dart';
 import 'package:attributionmethodtest/screens/introduction_screen.dart';
-import 'package:attributionmethodtest/screens/app_background.dart';
+import 'package:attributionmethodtest/widgets/app_background.dart';
 import 'package:flutter/material.dart';
-
-import 'package:wave/config.dart';
-import 'package:wave/wave.dart';
-
-import 'center_app_bar.dart';
-import 'gradient_button.dart';
-import 'landing_screen.dart';
-import 'page_route_builders.dart';
+import '../widgets/center_app_bar.dart';
+import '../widgets/gradient_button.dart';
+import '../utils/page_route_builders.dart';
 
 class HomeScreen extends StatefulWidget {
 
@@ -24,42 +19,62 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   String get _targetAppName => remoteConfig.getString("target_app_name");
   List<String> get _methods => remoteConfig.getString("test_methods").split(",");
   List<String> _methodNames;
-  String _method;
+  AnimationController _controller;
+  Animation<double> _animation;
+
   @override
   void initState() {
     super.initState();
     DeviceIdHelper.retrieveDeviceId();
-    print(_methods);
     _methodNames = _methods.map((method) => remoteConfig.getString(method+"_name")).toList();
-    print(_methodNames);
+    _controller = AnimationController(
+        duration: const Duration(milliseconds: 1000), vsync: this, value: 0.0);
+    _animation = CurvedAnimation(parent: _controller, curve: Curves.fastOutSlowIn);
+    _controller.forward();
   }
+  @override
+  dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(
-        children: <Widget>[
-          AppBackground(),
-          ListView(
-            children: <Widget>[
-              CenterAppBar(),
-              Container(
-                padding: EdgeInsets.only(left: 30, right: 30),
-                height: 200,
-                child: RichText(
-                  textAlign: TextAlign.center,
-                    text: TextSpan(
-                      text: 'Use this app to test the ',
-                      style: TextStyle(fontSize: 18, color: Colors.black87, shadows: [Shadow(color: Colors.white, offset: Offset(1, 1), blurRadius: 2)]),
-                      children: _introText(),
-                    )
+          children: <Widget>[
+            AppBackground(),
+      ScaleTransition(
+        scale: _animation,
+        child: ListView(
+              children: <Widget>[
+                CenterAppBar(),
+                Container(
+                  height: 200,
+                  padding: EdgeInsets.only(left: 30, right: 30,),
+                  child: RichText(
+                      textAlign: TextAlign.center,
+                      text: TextSpan(
+                        text: 'Use this app to test the ',
+                        style: TextStyle(fontSize: 18,
+                            color: Colors.white,
+                            shadows: [
+                              Shadow(color: Colors.black87,
+                                  offset: Offset(1, 1),
+                                  blurRadius: 2)
+                            ]),
+                        children: _introText(),
+                      )
+                  ),
                 ),
-              ),
-              for(Widget button in _buildButtons(context)) button,
-            ],
-          ),
-        ],
+                for(Widget button in _buildButtons(context)) button,
+              ],
+            ),
       ),
+          ],
+        ),
+//      ),
     );
   }
 
@@ -88,13 +103,14 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     List<GradientButton> result = List<GradientButton>();
     for (var i = 0; i < _methods.length && i < _methodNames.length; i++) {
       result.add(GradientButton(
-        width: 40,
+        width: double.infinity,
         height: 52,
         margin: EdgeInsets.only(left: 20, right: 20, top: 15, bottom: 15),
         buttonText: "Test ${_methodNames[i]}",
         onPressed: () {
           Navigator.push(
-              context, PlainRouteBuilder(IntroductionScreen(_methods[i])));
+              context, PlainRouteBuilder(IntroductionScreen(_methods[i]))
+          );
         },
       ));
     }
