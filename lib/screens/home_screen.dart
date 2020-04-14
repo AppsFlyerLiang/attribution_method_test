@@ -17,21 +17,23 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   String get _targetAppName => remoteConfig.getString("target_app_name");
-  List<String> get _methods => remoteConfig.getString("test_methods").split(",");
+  String get _targetAppId => remoteConfig.getString("target_app_id");
+
+  List<String> get _methods =>
+      remoteConfig.getString("test_methods").split(",");
   List<String> _methodNames;
   AnimationController _controller;
   Animation<double> _animation;
-
   @override
   void initState() {
     super.initState();
     DeviceIdHelper.retrieveDeviceId();
-    _methodNames = _methods.map((method) => remoteConfig.getString(method+"_name")).toList();
-    _controller = AnimationController(
-        duration: const Duration(milliseconds: 1000), vsync: this, value: 0.0);
+    _methodNames = _methods.map((method) => remoteConfig.getString(method + "_name")).toList();
+    _controller = AnimationController(duration: const Duration(milliseconds: 1000), vsync: this, value: 0.0);
     _animation = CurvedAnimation(parent: _controller, curve: Curves.fastOutSlowIn);
     _controller.forward();
   }
+
   @override
   dispose() {
     _controller.dispose();
@@ -43,11 +45,11 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(
-          children: <Widget>[
-            AppBackground(),
-      ScaleTransition(
-        scale: _animation,
-        child: ListView(
+        children: <Widget>[
+          AppBackground(),
+          ScaleTransition(
+            scale: _animation,
+            child: ListView(
               children: <Widget>[
                 CenterAppBar(),
                 Container(
@@ -71,10 +73,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                 for(Widget button in _buildButtons(context)) button,
               ],
             ),
+          ),
+        ],
       ),
-          ],
-        ),
-//      ),
     );
   }
 

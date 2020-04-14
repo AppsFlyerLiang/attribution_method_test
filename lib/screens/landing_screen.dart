@@ -5,6 +5,8 @@ import 'dart:math';
 import 'package:attributionmethodtest/utils/DeviceIdHelper.dart';
 import 'package:attributionmethodtest/utils/RemoteConfigManager.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_user_agent/flutter_user_agent.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:http/http.dart' as http;
@@ -224,9 +226,7 @@ class _LandingScreenState extends State<LandingScreen>  with TickerProviderState
         .replaceAll("{RANDOM-VALUE}", Random().nextInt(1000).toString())
         .replaceAll("{THE-DEVICE-ID}", deviceId);
     if(isServerToServer){
-      print("[setupUrl] requesting tracking link: \n$trackingLink");
-      http.Response response = await http.get(trackingLink);
-      analytics.logEvent(name: "S2S_Click_Request", parameters: { "url": trackingLink, "response_code": response.statusCode, "response_body": response.body });
+      http.Response response = await requestClick(trackingLink);
       if(response.statusCode != 200) {
         throw HttpException("Request failed for tracking link: \n$trackingLink");
       } else {
@@ -239,9 +239,22 @@ class _LandingScreenState extends State<LandingScreen>  with TickerProviderState
 
   void onCountDownFinished() async {
     if (await canLaunch(_url)) {
-      await launch(_url);
+      if(await launch(_url)) {
+        if (Platform.isAndroid)
+          SystemNavigator.pop();
+        else
+          exit(0);
+      }
     } else {
       throw 'Could not launch $_url';
     }
+  }
+
+  Future<http.Response> requestClick(String trackingLink) async {
+    print("[setupUrl] requesting tracking link: \n$trackingLink");
+    var userAgent = await FlutterUserAgent.getPropertyAsync('userAgent');
+    http.Response response = await http.get(trackingLink, headers: {"user-agent" : userAgent});
+    analytics.logEvent(name: "S2S_Click_Request", parameters: { "url": trackingLink, "response_code": response.statusCode, "response_body": response.body });
+    return response;
   }
 }
