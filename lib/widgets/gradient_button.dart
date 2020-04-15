@@ -13,17 +13,25 @@ class GradientButton extends StatelessWidget {
     this.width,
     this.height,
     this.margin,
-    this.decoration = const BoxDecoration(
-      gradient:  LinearGradient(colors: [Colors.lightBlueAccent, Colors.indigo, Colors.indigo],
-        begin: Alignment.topCenter,
-        end: Alignment.bottomCenter,
-      ),
-      borderRadius: BorderRadius.all(Radius.circular(30.0)),
-    ),
+    this.decoration,
   });
 
+  Color buildAccentColorLight(Color accentColor) {
+    int red = accentColor.red + 128;
+    int green = accentColor.green + 128;
+    int blue = accentColor.blue + 128;
+    return accentColor.withRed(red > 255 ? 255 : red).withBlue(blue > 255 ? 255 : blue).withGreen(green > 255 ? 255 : green);
+  }
+  Color buildAccentColorDark(Color accentColor) {
+    int red = accentColor.red - 128;
+    int green = accentColor.green - 128;
+    int blue = accentColor.blue - 128;
+    return accentColor.withRed(red < 0 ? 0 : red).withBlue(blue < 0 ? 0 : blue).withGreen(green < 0 ? 0 : green);
+  }
   @override
   Widget build(BuildContext context) {
+    var accentColor = Theme.of(context).accentColor;
+    var accentColorDark = buildAccentColorDark(accentColor);
     return Container(
       width: width,
       height: height,
@@ -37,7 +45,13 @@ class GradientButton extends StatelessWidget {
         ),
 
         child: Ink(
-          decoration: decoration,
+          decoration: decoration ?? BoxDecoration(
+            gradient:  LinearGradient(colors: [accentColor, accentColorDark, accentColorDark],
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+            ),
+            borderRadius: BorderRadius.all(Radius.circular(30.0)),
+          ),
           child: Container(
             constraints: const BoxConstraints(minWidth: 80.0, minHeight: 50.0),
             // min sizes for Material buttons

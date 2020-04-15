@@ -3,6 +3,7 @@ import 'package:attributionmethodtest/utils/RemoteConfigManager.dart';
 import 'package:attributionmethodtest/screens/introduction_screen.dart';
 import 'package:attributionmethodtest/widgets/app_background.dart';
 import 'package:flutter/material.dart';
+import '../AppConfig.dart';
 import '../widgets/center_app_bar.dart';
 import '../widgets/gradient_button.dart';
 import '../utils/page_route_builders.dart';
@@ -16,11 +17,10 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
-  String get _targetAppName => remoteConfig.getString("target_app_name");
-  String get _targetAppId => remoteConfig.getString("target_app_id");
+  String get _targetAppName => App.remoteConfig.getString("target_app_name");
 
   List<String> get _methods =>
-      remoteConfig.getString("test_methods").split(",");
+      App.remoteConfig.getString("test_methods").split(",");
   List<String> _methodNames;
   AnimationController _controller;
   Animation<double> _animation;
@@ -28,7 +28,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   void initState() {
     super.initState();
     DeviceIdHelper.retrieveDeviceId();
-    _methodNames = _methods.map((method) => remoteConfig.getString(method + "_name")).toList();
+    _methodNames = _methods.map((method) => App.remoteConfig.getString(method + "_name")).toList();
     _controller = AnimationController(duration: const Duration(milliseconds: 1000), vsync: this, value: 0.0);
     _animation = CurvedAnimation(parent: _controller, curve: Curves.fastOutSlowIn);
     _controller.forward();

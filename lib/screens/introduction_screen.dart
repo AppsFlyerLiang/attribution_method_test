@@ -1,6 +1,7 @@
 import 'package:attributionmethodtest/utils/RemoteConfigManager.dart';
 import 'package:attributionmethodtest/screens/landing_screen.dart';
 import 'package:flutter/material.dart';
+import '../AppConfig.dart';
 import '../widgets/center_app_bar.dart';
 import '../widgets/gradient_button.dart';
 import '../widgets/app_background.dart';
@@ -15,7 +16,7 @@ class IntroductionScreen extends StatefulWidget {
 }
 
 class _IntroductionScreenState extends State<IntroductionScreen> with TickerProviderStateMixin  {
-  String get _targetAppName => remoteConfig.getString("target_app_name");
+  String get _targetAppName => App.remoteConfig.getString("target_app_name");
   AnimationController _controller;
   Animation<double> _animation;
   @override

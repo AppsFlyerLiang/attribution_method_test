@@ -1,12 +1,11 @@
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 
-RemoteConfig remoteConfig;
 class RemoteConfigManager {
   static Map<String, dynamic> defaults = {
     "pid":"Attribution%20Method%20Testing",
     "test_methods":"referrer,id_matching,view_through,fingerprinting",
     "target_app_id": "com.candyapp.appsflyer",
-    "target_app_name": "AppsFlyer Candy Shop Training(By Default)",
+    "target_app_name": "AppsFlyer Candy Shop Training",
     "referrer_name": "Referrer",
     "referrer_name_s2s": false,
     "referrer_url": "https://app.appsflyer.com/{TARGET-APP-ID}?pid=Attribution%20Method%20Testing&c=Referrer&af_adset={RANDOM-VALUE}&af_fingerprint_attribution=false&af_dp=candyapp%3A%2F%2Freferrer-conversion-results",
@@ -21,13 +20,13 @@ class RemoteConfigManager {
     "fingerprinting_url": "https://app.appsflyer.com/com.candyapp.appsflyer?pid=Attribution%20Method%20Testing&c=Fingerprinting&af_adset={RANDOM-VALUE}&af_dp=candyapp%3A%2F%2Ffingerprinting-conversion-results",
   };
   static Future<RemoteConfig> setup() async {
-    remoteConfig = await RemoteConfig.instance;
+    var remoteConfig = await RemoteConfig.instance;
     remoteConfig.setConfigSettings(RemoteConfigSettings(debugMode: true));
     await remoteConfig.setDefaults(defaults);
-    retrieve();
+    retrieve(remoteConfig);
     return remoteConfig;
   }
-  static Future<RemoteConfig> retrieve() async {
+  static Future<RemoteConfig> retrieve(RemoteConfig remoteConfig) async {
     print("[RemoteConfigManager] retrieve");
     try {
       await remoteConfig.fetch(expiration: const Duration(seconds: 0));

@@ -2,15 +2,15 @@ import 'dart:async';
 import 'dart:io';
 import 'dart:math';
 
+import 'package:attributionmethodtest/AppConfig.dart';
+import 'package:attributionmethodtest/utils/ColorUtils.dart';
 import 'package:attributionmethodtest/utils/DeviceIdHelper.dart';
-import 'package:attributionmethodtest/utils/RemoteConfigManager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_user_agent/flutter_user_agent.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:http/http.dart' as http;
-import '../main.dart';
 import '../widgets/app_background.dart';
 import '../widgets/center_app_bar.dart';
 import '../widgets/gradient_button.dart';
@@ -175,10 +175,10 @@ class _LandingScreenState extends State<LandingScreen>  with TickerProviderState
 //                                    progressColor: Colors.indigoAccent,
                                     linearGradient: LinearGradient(
                                       colors: [
-                                      Colors.lightBlueAccent,
-                                      Colors.deepPurpleAccent,
-                                      Colors.indigoAccent,
-                                    ],),
+                                        Theme.of(context).accentColor,
+                                        ColorUtils.dark(Theme.of(context).accentColor),
+                                      ],
+                                    ),
                                     animateFromLastPercent: true,
 
                                   ),
@@ -215,10 +215,10 @@ class _LandingScreenState extends State<LandingScreen>  with TickerProviderState
 
   Future<String> setupUrl() async {
     print("setupUrl");
-    String url = remoteConfig.getString(widget.method+"_url");
-    String targetAppId = remoteConfig.getString("target_app_id") ?? "com.candyapp.appsflyer";
-    String pid = remoteConfig.getString("pid");
-    bool isServerToServer = remoteConfig.getBool(widget.method + "_s2s");
+    String url = App.remoteConfig.getString(widget.method+"_url");
+    String targetAppId = App.remoteConfig.getString("target_app_id") ?? "com.candyapp.appsflyer";
+    String pid = App.remoteConfig.getString("pid");
+    bool isServerToServer = App.remoteConfig.getBool(widget.method + "_s2s");
     print("[setupUrl] get remote config of ${widget.method + "_s2s"}: $isServerToServer");
     String deviceId = await DeviceIdHelper.retrieveDeviceId();
     String trackingLink = url.replaceAll("{PID}", pid)
@@ -254,7 +254,7 @@ class _LandingScreenState extends State<LandingScreen>  with TickerProviderState
     print("[setupUrl] requesting tracking link: \n$trackingLink");
     var userAgent = await FlutterUserAgent.getPropertyAsync('userAgent');
     http.Response response = await http.get(trackingLink, headers: {"user-agent" : userAgent});
-    analytics.logEvent(name: "S2S_Click_Request", parameters: { "url": trackingLink, "response_code": response.statusCode, "response_body": response.body });
+    App.analytics.logEvent(name: "S2S_Click_Request", parameters: { "url": trackingLink, "response_code": response.statusCode, "response_body": response.body });
     return response;
   }
 }
