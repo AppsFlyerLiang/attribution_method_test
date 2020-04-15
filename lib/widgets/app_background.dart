@@ -1,4 +1,4 @@
-import 'package:attributionmethodtest/AppConfig.dart';
+import 'package:attributionmethodtest/app.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:wave/config.dart';

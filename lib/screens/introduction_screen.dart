@@ -1,7 +1,7 @@
 import 'package:attributionmethodtest/utils/RemoteConfigManager.dart';
 import 'package:attributionmethodtest/screens/landing_screen.dart';
 import 'package:flutter/material.dart';
-import '../AppConfig.dart';
+import '../app.dart';
 import '../widgets/center_app_bar.dart';
 import '../widgets/gradient_button.dart';
 import '../widgets/app_background.dart';
@@ -23,7 +23,7 @@ class _IntroductionScreenState extends State<IntroductionScreen> with TickerProv
   void initState() {
     super.initState();
     _controller = AnimationController(
-        duration: const Duration(milliseconds: 600), vsync: this, value: 0.0);
+        duration: const Duration(milliseconds: 500), vsync: this, value: 0.0);
     _animation = CurvedAnimation(parent: _controller, curve: Curves.bounceOut);
 
     _controller.forward();

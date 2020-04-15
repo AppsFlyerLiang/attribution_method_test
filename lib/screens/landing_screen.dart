@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:io';
 import 'dart:math';
 
-import 'package:attributionmethodtest/AppConfig.dart';
+import 'package:attributionmethodtest/app.dart';
 import 'package:attributionmethodtest/utils/ColorUtils.dart';
 import 'package:attributionmethodtest/utils/DeviceIdHelper.dart';
 import 'package:flutter/material.dart';

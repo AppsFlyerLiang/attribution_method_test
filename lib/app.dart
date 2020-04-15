@@ -1,6 +1,4 @@
-import 'package:attributionmethodtest/screens/existing_popup.dart';
-import 'package:attributionmethodtest/screens/home_screen.dart';
-import 'package:attributionmethodtest/utils/RemoteConfigManager.dart';
+import 'package:appsflyer_sdk/appsflyer_sdk.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/cupertino.dart';
@@ -18,14 +16,24 @@ class App {
   static FirebaseAnalytics analytics;
   static RemoteConfig remoteConfig;
   static String flavor = "GooglePlay";
+  static AppsflyerSdk appsflyerSdk;
 
   static Future<InitResult> init() async {
     WidgetsFlutterBinding.ensureInitialized();
     analytics = FirebaseAnalytics();
     analytics.logAppOpen();
+    appsflyerSdk = AppsflyerSdk({
+      "afDevKey": "SC6zv6Zb6N52vePBePs5Xo",
+      "afAppId": "3333999930",
+      "isDebug": true
+    });
+    appsflyerSdk.initSdk(registerConversionDataCallback: true, registerOnAppOpenAttributionCallback: true);
     remoteConfig = await RemoteConfig.instance;
     await _setupRemoteConfig();
     flavor = remoteConfig.getString("flavor") ?? flavorGooglePlay;
+
+
+
     String _targetAppId = remoteConfig.getString("target_app_id") ?? "com.candyapp.appsflyer";
     if (await _checkTargetAppExisting(_targetAppId)) {
       return InitResult.targetAppInstalled;

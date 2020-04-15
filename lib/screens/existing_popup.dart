@@ -1,5 +1,7 @@
 import 'dart:io';
 
+import 'package:attributionmethodtest/screens/home_screen.dart';
+import 'package:attributionmethodtest/utils/page_route_builders.dart';
 import 'package:attributionmethodtest/widgets/app_background.dart';
 import 'package:attributionmethodtest/widgets/center_app_bar.dart';
 import 'package:attributionmethodtest/widgets/gradient_button.dart';
@@ -86,7 +88,19 @@ class _ExistingPopupState extends State<ExistingPopup> with TickerProviderStateM
                           Expanded(
                             child: GradientButton(
                               height: 50,
-                              margin: EdgeInsets.fromLTRB(20, 0, 20, 30),
+                              margin: EdgeInsets.fromLTRB(20, 0, 10, 30),
+                              buttonText: "Continue",
+                              onPressed: () {
+                                Navigator.pushAndRemoveUntil(context, PlainRouteBuilder(
+                                  HomeScreen()
+                                ), (route) => route==null);
+                              },
+                            ),
+                          ),
+                          Expanded(
+                            child: GradientButton(
+                              height: 50,
+                              margin: EdgeInsets.fromLTRB(10, 0, 20, 30),
                               buttonText: "OK",
                               onPressed: () {
                                 if (Platform.isAndroid)

@@ -1,6 +1,6 @@
 import 'package:attributionmethodtest/screens/existing_popup.dart';
 import 'package:attributionmethodtest/screens/home_screen.dart';
-import 'package:attributionmethodtest/AppConfig.dart';
+import 'package:attributionmethodtest/app.dart';
 import 'package:firebase_analytics/observer.dart';
 import 'package:flutter/material.dart';
 

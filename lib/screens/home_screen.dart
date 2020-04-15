@@ -3,7 +3,7 @@ import 'package:attributionmethodtest/utils/RemoteConfigManager.dart';
 import 'package:attributionmethodtest/screens/introduction_screen.dart';
 import 'package:attributionmethodtest/widgets/app_background.dart';
 import 'package:flutter/material.dart';
-import '../AppConfig.dart';
+import '../app.dart';
 import '../widgets/center_app_bar.dart';
 import '../widgets/gradient_button.dart';
 import '../utils/page_route_builders.dart';
@@ -53,8 +53,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
               children: <Widget>[
                 CenterAppBar(),
                 Container(
-                  height: 200,
-                  padding: EdgeInsets.only(left: 30, right: 30,),
+                  padding: EdgeInsets.only(left: 30, right: 30, bottom: App.flavorGooglePlayStg == App.flavor ? 30 : 70),
                   child: RichText(
                       textAlign: TextAlign.center,
                       text: TextSpan(
