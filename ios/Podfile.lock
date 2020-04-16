@@ -1,6 +1,10 @@
 PODS:
   - advertising_id (0.0.1):
     - Flutter
+  - appsflyer_sdk (1.1.3):
+    - AppsFlyerFramework (= 5.1.0)
+    - Flutter
+  - AppsFlyerFramework (5.1.0)
   - Firebase/Analytics (6.20.0):
     - Firebase/Core
   - Firebase/Core (6.20.0):
@@ -67,6 +71,12 @@ PODS:
     - "GoogleUtilities/NSData+zlib (~> 6.2)"
     - Protobuf (>= 3.9.2, ~> 3.9)
   - Flutter (1.0.0)
+  - flutter_appavailability (0.0.1):
+    - Flutter
+  - flutter_package_manager (0.0.1):
+    - Flutter
+  - flutter_user_agent (1.2.1):
+    - Flutter
   - GoogleAppMeasurement (6.3.1):
     - GoogleUtilities/AppDelegateSwizzler (~> 6.0)
     - GoogleUtilities/MethodSwizzler (~> 6.0)
@@ -111,17 +121,22 @@ PODS:
 
 DEPENDENCIES:
   - advertising_id (from `.symlinks/plugins/advertising_id/ios`)
+  - appsflyer_sdk (from `.symlinks/plugins/appsflyer_sdk/ios`)
   - firebase_analytics (from `.symlinks/plugins/firebase_analytics/ios`)
   - firebase_core (from `.symlinks/plugins/firebase_core/ios`)
   - firebase_core_web (from `.symlinks/plugins/firebase_core_web/ios`)
   - firebase_remote_config (from `.symlinks/plugins/firebase_remote_config/ios`)
   - Flutter (from `Flutter`)
+  - flutter_appavailability (from `.symlinks/plugins/flutter_appavailability/ios`)
+  - flutter_package_manager (from `.symlinks/plugins/flutter_package_manager/ios`)
+  - flutter_user_agent (from `.symlinks/plugins/flutter_user_agent/ios`)
   - url_launcher (from `.symlinks/plugins/url_launcher/ios`)
   - url_launcher_macos (from `.symlinks/plugins/url_launcher_macos/ios`)
   - url_launcher_web (from `.symlinks/plugins/url_launcher_web/ios`)
 
 SPEC REPOS:
   trunk:
+    - AppsFlyerFramework
     - Firebase
     - FirebaseABTesting
     - FirebaseAnalytics
@@ -143,6 +158,8 @@ SPEC REPOS:
 EXTERNAL SOURCES:
   advertising_id:
     :path: ".symlinks/plugins/advertising_id/ios"
+  appsflyer_sdk:
+    :path: ".symlinks/plugins/appsflyer_sdk/ios"
   firebase_analytics:
     :path: ".symlinks/plugins/firebase_analytics/ios"
   firebase_core:
@@ -153,6 +170,12 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/firebase_remote_config/ios"
   Flutter:
     :path: Flutter
+  flutter_appavailability:
+    :path: ".symlinks/plugins/flutter_appavailability/ios"
+  flutter_package_manager:
+    :path: ".symlinks/plugins/flutter_package_manager/ios"
+  flutter_user_agent:
+    :path: ".symlinks/plugins/flutter_user_agent/ios"
   url_launcher:
     :path: ".symlinks/plugins/url_launcher/ios"
   url_launcher_macos:
@@ -162,6 +185,8 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   advertising_id: 31c738918c2e04d86d80c293357e61e06e87df74
+  appsflyer_sdk: f2f14171dbb3c0402e29ac79e7786e03fc511300
+  AppsFlyerFramework: b5e6d0d1718c445eeb151769e97246c00ae4628d
   Firebase: fe7f74012742ab403451dd283e6909b8f1fb348a
   firebase_analytics: dacdcfc524d722fff13dcff942f0dfa47e6be567
   firebase_core: 0d8be0e0d14c4902953aeb5ac5d7316d1fe4b978
@@ -177,6 +202,9 @@ SPEC CHECKSUMS:
   FirebaseInstanceID: 7ee0d6777013bb952f377b41965bf132b6a075be
   FirebaseRemoteConfig: 47abf7a04a9082091955ea555aa79cfdd249b19c
   Flutter: 0e3d915762c693b495b44d77113d4970485de6ec
+  flutter_appavailability: ebf8f85abea44436d1262fcde8a4e64b2534b01a
+  flutter_package_manager: d1f7589d2679f93814379013a4c65833a4d9591f
+  flutter_user_agent: 73414e04725e8332d4a61d4b1d4153971d7a2349
   GoogleAppMeasurement: c29d405ff76e18551b5d158eaba6753fda8c7542
   GoogleDataTransport: a857c6a002d201b524dd4bc2ed7e7355ed07e785
   GoogleDataTransportCCTSupport: 32f75fbe904c82772fcbb6b6bd4525bfb6f2a862

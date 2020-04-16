@@ -1,5 +1,6 @@
 import 'package:appsflyer_sdk/appsflyer_sdk.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_appavailability/flutter_appavailability.dart';
@@ -17,15 +18,27 @@ class App {
   static RemoteConfig remoteConfig;
   static String flavor = "GooglePlay";
   static AppsflyerSdk appsflyerSdk;
+  static FirebaseMessaging firebaseMessage = FirebaseMessaging();
 
   static Future<InitResult> init() async {
     WidgetsFlutterBinding.ensureInitialized();
+    firebaseMessage.configure(
+      onMessage: onFirebaseMessage,
+      onBackgroundMessage: onFirebaseBackgroundMessage,
+      onLaunch: onFirebaseLaunch,
+      onResume: onFirebaseResume,
+    );
     analytics = FirebaseAnalytics();
     analytics.logAppOpen();
     appsflyerSdk = AppsflyerSdk({
       "afDevKey": "SC6zv6Zb6N52vePBePs5Xo",
       "afAppId": "3333999930",
       "isDebug": true
+    });
+    appsflyerSdk.updateServerUninstallToken(await firebaseMessage.getToken());
+    firebaseMessage.onTokenRefresh.listen((deviceToken) {
+      print("onTokenRefresh:$deviceToken");
+      appsflyerSdk.updateServerUninstallToken(deviceToken);
     });
     appsflyerSdk.initSdk(registerConversionDataCallback: true, registerOnAppOpenAttributionCallback: true);
     remoteConfig = await RemoteConfig.instance;
@@ -76,6 +89,37 @@ class App {
     return false;
   }
 
+
+  static Future<dynamic> onFirebaseMessage(Map<String, dynamic> message) async {
+    print("onFirebaseMessage");
+    message.forEach((key, value) {
+      print("key: $key, value: $value");
+
+    });
+  }
+
+  static Future<dynamic> onFirebaseResume(Map<String, dynamic> message) async {
+    print("onFirebaseResume");
+    message.forEach((key, value) {
+      print("key: $key, value: $value");
+
+    });
+  }
+
+  static Future<dynamic> onFirebaseLaunch(Map<String, dynamic> message) async {
+    print("onFirebaseLaunch");
+    message.forEach((key, value) {
+      print("key: $key, value: $value");
+
+    });
+  }
+}
+
+Future<dynamic> onFirebaseBackgroundMessage(Map<String, dynamic> message) async {
+  print("onFirebaseBackgroundMessage");
+  message.forEach((key, value) {
+    print("key: $key, value: $value");
+  });
 }
 
 Map<String, dynamic> _remoteConfigDefaults = {
